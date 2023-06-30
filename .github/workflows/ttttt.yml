@@ -43,7 +43,7 @@ jobs:
           echo "release_tag=multi-platform_$(date +"%Y.%m.%d_%H%M")" >> $GITHUB_OUTPUT
           mkdir $GITHUB_WORKSPACE/init-test
           echo "init gen_release_tag test " >> $GITHUB_WORKSPACE/init-test/init.txt
-          ls
+          pwd
           ls $GITHUB_WORKSPACE
           cat $GITHUB_WORKSPACE/init-test/init.txt
   job_build:

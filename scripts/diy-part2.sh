@@ -5,7 +5,7 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
-# https://github.com/smallprogram/OpenWrtAction
+# https://github.com/legoomd/legomd-openwrt-lede
 # File name: diy-part2.sh
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
@@ -19,14 +19,33 @@ sed -i '/$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF./ d' package/lean/default-settings/fi
 # Temporary repair https://github.com/coolsnowwolf/lede/issues/8423
 # sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' feeds/packages/utils/dockerd/Makefile
 
-
 # 添加新主题
 # rm -rf ./feeds/luci/themes/luci-theme-argon
 # git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git ./feeds/luci/themes/luci-theme-argon
 #git clone https://github.com/jerrykuku/luci-app-argon-config.git ./package/lean/luci-app-argon-config
-if [ ! -d "./package/lean/luci-app-argon-config" ]; then git clone https://github.com/jerrykuku/luci-app-argon-config.git ./package/lean/luci-app-argon-config;   else cd ./package/lean/luci-app-argon-config; git stash; git stash drop; git pull; cd ..; cd ..; cd ..; fi;
+if [ ! -d "./package/lean/luci-app-argon-config" ]; then
+    git clone https://github.com/jerrykuku/luci-app-argon-config.git ./package/lean/luci-app-argon-config
+else
+    cd ./package/lean/luci-app-argon-config
+    git stash
+    git stash drop
+    git pull
+    cd ..
+    cd ..
+    cd ..
+fi
 #git clone https://github.com/rufengsuixing/luci-app-adguardhome.git ./package/lean/luci-app-adguardhome
-if [ ! -d "./package/lean/luci-app-adguardhome" ]; then git clone https://github.com/rufengsuixing/luci-app-adguardhome.git ./package/lean/luci-app-adguardhome;   else cd ./package/lean/luci-app-adguardhome; git stash; git stash drop; git pull; cd ..; cd ..; cd ..; fi;
+if [ ! -d "./package/lean/luci-app-adguardhome" ]; then
+    git clone https://github.com/rufengsuixing/luci-app-adguardhome.git ./package/lean/luci-app-adguardhome
+else
+    cd ./package/lean/luci-app-adguardhome
+    git stash
+    git stash drop
+    git pull
+    cd ..
+    cd ..
+    cd ..
+fi
 # git clone https://github.com/jerrykuku/lua-maxminddb.git
 # git clone https://github.com/jerrykuku/luci-app-vssr.git
 # git clone https://github.com/lisaac/luci-app-dockerman.git
@@ -43,28 +62,26 @@ if [ ! -d "./package/lean/luci-app-adguardhome" ]; then git clone https://github
 # sed -i 's/echo $h/echo $g/g' package/lean/autocore/files/x86/autocore
 
 #关闭串口跑码
-sed -i 's/console=tty0//g'  target/linux/x86/image/Makefile
+sed -i 's/console=tty0//g' target/linux/x86/image/Makefile
 
 #添加默认登录背景
 rm -rf ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background
 mkdir -p ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background
-wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/smallprogram/OpenWrtAction/raw/main/source/video/NetworkWorld1.mp4
-wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/smallprogram/OpenWrtAction/raw/main/source/video/NetworkWorld2.mp4
-wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/smallprogram/OpenWrtAction/raw/main/source/video/NetworkWorld3.mp4
-wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/smallprogram/OpenWrtAction/raw/main/source/video/video1.mp4
-wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/smallprogram/OpenWrtAction/raw/main/source/video/video2.mp4
-wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/smallprogram/OpenWrtAction/raw/main/source/video/video3.mp4
-wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/smallprogram/OpenWrtAction/raw/main/source/img/1.jpg
-
+wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/legoomd/legomd-openwrt-lede/raw/main/source/video/NetworkWorld1.mp4
+wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/legoomd/legomd-openwrt-lede/raw/main/source/video/NetworkWorld2.mp4
+wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/legoomd/legomd-openwrt-lede/raw/main/source/video/NetworkWorld3.mp4
+wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/legoomd/legomd-openwrt-lede/raw/main/source/video/video1.mp4
+wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/legoomd/legomd-openwrt-lede/raw/main/source/video/video2.mp4
+wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/legoomd/legomd-openwrt-lede/raw/main/source/video/video3.mp4
+wget -P ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background https://github.com/legoomd/legomd-openwrt-lede/raw/main/source/img/1.jpg
 
 rm -rf ./feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/background
 mkdir -p ./feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/background
 cp ./feeds/luci/themes/luci-theme-argon-mod/htdocs/luci-static/argon/background/* ./feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/background
 
-
 #Diy
 # rm -rf ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
-# wget -P ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status https://github.com/smallprogram/OpenWrtAction/raw/main/source/openwrtfile/index.htm
+# wget -P ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status https://github.com/legoomd/legomd-openwrt-lede/raw/main/source/openwrtfile/index.htm
 
 #修复一些问题
 ## 修复mac80211编译报错
