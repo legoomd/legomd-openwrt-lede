@@ -95,7 +95,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platforms: [x86, r5s]
+        platforms: [x86]
 
     steps:
       - name: Initialization environment
