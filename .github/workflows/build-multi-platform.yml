@@ -33,7 +33,6 @@ env:
   UPLOAD_ARTIFACT: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-  PLATFORMS: x86
 
 jobs:
   job_init:
@@ -41,12 +40,24 @@ jobs:
     outputs:
       output_release_tag: ${{ steps.gen_release_tag.outputs.release_tag }}
     steps:
-      - id: gen_release_tag
+      - name: Initialization environment
+        id: gen_release_tag
         run: |
-          echo "release_tag=multi-platform_$(date +"%Y.%m.%d_%H%M")" >> $GITHUB_OUTPUT
+          echo "release_tag=multi-platform_$(date +"%Y.%m.%d_%H%M")" >> $GITHUB_OUTPUT        
           sudo timedatectl set-timezone "$TZ"
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
+          df -hT
+
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 3072
+          swap-size-mb: 1024
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-haskell: "true"
+          build-mount-path: "/workdir"
 
       - name: Checkout
         uses: actions/checkout@main
@@ -99,23 +110,6 @@ jobs:
         platforms: [x86]
 
     steps:
-      - name: Initialization environment
-        run: |
-          sudo timedatectl set-timezone "$TZ"
-          sudo mkdir -p /workdir
-          sudo chown $USER:$GROUPS /workdir
-          df -hT
-
-      - name: Maximize build space
-        uses: easimon/maximize-build-space@master
-        with:
-          root-reserve-mb: 3072
-          swap-size-mb: 1024
-          remove-dotnet: "true"
-          remove-android: "true"
-          remove-haskell: "true"
-          build-mount-path: "/workdir"
-
       # - name: Checkout
       #   uses: actions/checkout@main
       #   with:
