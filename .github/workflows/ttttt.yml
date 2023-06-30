@@ -1,0 +1,81 @@
+#
+# Copyright (c) 2022-2023 SMALLPROGRAM <https://github.com/smallprogram/OpenWrtAction>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/smallprogram/OpenWrtAction
+# Description: Build OpenWrt using GitHub Actions
+#
+
+name: tttttt
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: "SSH connection to Actions"
+        required: false
+        default: "false"
+
+env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  FEEDS_CONF: feeds_config/custom.feeds.conf.default
+  DIY_P1_SH: diy_script/diy-part1.sh
+  DIY_P2_SH: diy_script/diy-part2.sh
+  COMMIT_LOG_NUM: 1
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  UPLOAD_ARTIFACT: false
+  UPLOAD_RELEASE: true
+  TZ: Asia/Shanghai
+
+jobs:
+  job_init:
+    runs-on: ubuntu-latest
+    outputs:
+      output_release_tag: ${{ steps.gen_release_tag.outputs.release_tag }}
+    steps:
+      - id: gen_release_tag
+        run: |
+          echo "release_tag=multi-platform_$(date +"%Y.%m.%d_%H%M")" >> $GITHUB_OUTPUT
+          mkdir $GITHUB_WORKSPACE/init-test
+          echo "init" >> $GITHUB_WORKSPACE/init-test/init.txt
+
+  job_build:
+    needs: job_init
+    runs-on: ubuntu-latest
+    name: Build-OpenWrt-${{ matrix.platforms }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platforms: [X86, R5S, R4S, R2S, R2C, Pi4_Model_B]
+
+    steps:
+      - name: Initialization environment
+        run: |
+          sudo timedatectl set-timezone "$TZ"
+          sudo mkdir -p /workdir
+          sudo chown $USER:$GROUPS /workdir
+          df -hT
+
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 3072
+          swap-size-mb: 1024
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-haskell: "true"
+          build-mount-path: "/workdir"
+
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Test
+        run: |
+          cat $GITHUB_WORKSPACE/init-test/init.txt
+          echo "${{ matrix.platforms }}"
+          echo "${{ matrix.platforms }}" >> $GITHUB_WORKSPACE/init-test/init.txt

@@ -33,6 +33,7 @@ env:
   UPLOAD_ARTIFACT: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
+  PLATFORMS: x86
 
 jobs:
   job_init:
@@ -40,24 +41,12 @@ jobs:
     outputs:
       output_release_tag: ${{ steps.gen_release_tag.outputs.release_tag }}
     steps:
-      - name: Initialization environment
-        id: gen_release_tag
+      - id: gen_release_tag
         run: |
-          echo "release_tag=multi-platform_$(date +"%Y.%m.%d_%H%M")" >> $GITHUB_OUTPUT        
+          echo "release_tag=multi-platform_$(date +"%Y.%m.%d_%H%M")" >> $GITHUB_OUTPUT
           sudo timedatectl set-timezone "$TZ"
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
-          df -hT
-
-      - name: Maximize build space
-        uses: easimon/maximize-build-space@master
-        with:
-          root-reserve-mb: 3072
-          swap-size-mb: 1024
-          remove-dotnet: "true"
-          remove-android: "true"
-          remove-haskell: "true"
-          build-mount-path: "/workdir"
 
       - name: Checkout
         uses: actions/checkout@main
@@ -69,7 +58,6 @@ jobs:
         run: |
           git clone $REPO_URL -b $REPO_BRANCH openwrt
           ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-          df -hT
 
       - name: Load custom feeds
         run: |
@@ -101,7 +89,7 @@ jobs:
           commit_author: angviza <angviza@gmail.com>
 
   job_build:
-    needs: job_init
+    # needs: job_init
     runs-on: ubuntu-latest
     name: Build-OpenWrt-${{ matrix.platforms }}
     strategy:
@@ -110,10 +98,27 @@ jobs:
         platforms: [x86]
 
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@main
-      #   with:
-      #     fetch-depth: 0
+      - name: Initialization environment
+        run: |
+          sudo timedatectl set-timezone "$TZ"
+          sudo mkdir -p /workdir
+          sudo chown $USER:$GROUPS /workdir
+          df -hT
+
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 3072
+          swap-size-mb: 1024
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-haskell: "true"
+          build-mount-path: "/workdir"
+
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
 
       - name: Install packages
         env:
@@ -137,13 +142,13 @@ jobs:
           sudo timedatectl set-timezone "$TZ"
           df -hT
 
-      # - name: Clone source code
-      #   working-directory: /workdir
-      #   run: |
-      #     df -hT
-      #     git clone $REPO_URL -b $REPO_BRANCH openwrt
-      #     ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-      #     df -hT
+      - name: Clone source code
+        working-directory: /workdir
+        run: |
+          df -hT
+          git clone $REPO_URL -b $REPO_BRANCH openwrt
+          ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+          df -hT
 
       # - name: Cache toolchain
       #   uses: klever1988/cachewrtbuild@main
@@ -152,18 +157,18 @@ jobs:
       #     prefix: ${{ github.workspace }}/openwrt
       #     mixkey: ${{ matrix.platforms }}
 
-      # - name: Load custom feeds
-      #   run: |
-      #     [ -e $FEEDS_CONF ] && cp -r $FEEDS_CONF openwrt/feeds.conf.default
-      #     chmod +x $DIY_P1_SH
-      #     cd openwrt
-      #     $GITHUB_WORKSPACE/$DIY_P1_SH
+      - name: Load custom feeds
+        run: |
+          [ -e $FEEDS_CONF ] && cp -r $FEEDS_CONF openwrt/feeds.conf.default
+          chmod +x $DIY_P1_SH
+          cd openwrt
+          $GITHUB_WORKSPACE/$DIY_P1_SH
 
-      # - name: Update feeds
-      #   run: cd openwrt && ./scripts/feeds update -a
+      - name: Update feeds
+        run: cd openwrt && ./scripts/feeds update -a
 
-      # - name: Install feeds
-      #   run: cd openwrt && ./scripts/feeds install -a
+      - name: Install feeds
+        run: cd openwrt && ./scripts/feeds install -a
 
       - name: Load custom configuration
         run: |
