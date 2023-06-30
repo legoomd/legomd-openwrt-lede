@@ -42,8 +42,10 @@ jobs:
         run: |
           echo "release_tag=multi-platform_$(date +"%Y.%m.%d_%H%M")" >> $GITHUB_OUTPUT
           mkdir $GITHUB_WORKSPACE/init-test
-          echo "init" >> $GITHUB_WORKSPACE/init-test/init.txt
-
+          echo "init gen_release_tag test " >> $GITHUB_WORKSPACE/init-test/init.txt
+          ls
+          ls $GITHUB_WORKSPACE
+          cat $GITHUB_WORKSPACE/init-test/init.txt
   job_build:
     needs: job_init
     runs-on: ubuntu-latest
@@ -54,6 +56,10 @@ jobs:
         platforms: [X86, R5S, R4S, R2S, R2C, Pi4_Model_B]
 
     steps:
+      - name: SSH connection to Actions
+        uses: mxschmitt/action-tmate@v3.13
+        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+
       - name: Initialization environment
         run: |
           sudo timedatectl set-timezone "$TZ"
