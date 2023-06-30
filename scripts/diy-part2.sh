@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2019-2023 SmallProgram <https://github.com/smallprogram>
+# Copyright (c) 2019-2023 legoomd <https://github.com/legoomd>
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.

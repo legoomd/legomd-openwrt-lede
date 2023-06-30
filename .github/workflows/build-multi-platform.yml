@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2022-2023 SMALLPROGRAM <https://github.com/legoomd/legomd-openwrt-lede>
+# Copyright (c) 2022-2023 legoomd <https://github.com/legoomd/legomd-openwrt-lede>
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
@@ -308,8 +308,8 @@ jobs:
     # - name: Generate commit
     #   id: Gen_commit
     #   run: |
-    #     sed -i 's/\(${{ env.RELEASE_TAG }}:\).*\(|\)/\${{ env.RELEASE_TAG }}: [![](https:\/\/img.shields.io\/badge\/LatestRelease-${{ steps.tag.outputs.release_tag }}-green?style=flat-square)](https:\/\/github.com\/smallprogram\/OpenWrtAction\/releases\/tag\/${{ steps.tag.outputs.release_tag }})\2/' docs/README.md
-    #     sed -i 's/\(${{ env.RELEASE_TAG }}:\).*\(|\)/\${{ env.RELEASE_TAG }}: [![](https:\/\/img.shields.io\/badge\/LatestRelease-${{ steps.tag.outputs.release_tag }}-green?style=flat-square)](https:\/\/github.com\/smallprogram\/OpenWrtAction\/releases\/tag\/${{ steps.tag.outputs.release_tag }})\2/' docs/README_EN.md
+    #     sed -i 's/\(${{ env.RELEASE_TAG }}:\).*\(|\)/\${{ env.RELEASE_TAG }}: [![](https:\/\/img.shields.io\/badge\/LatestRelease-${{ steps.tag.outputs.release_tag }}-green?style=flat-square)](https:\/\/github.com\/legoomd\/legomd-openwrt-lede\/releases\/tag\/${{ steps.tag.outputs.release_tag }})\2/' docs/README.md
+    #     sed -i 's/\(${{ env.RELEASE_TAG }}:\).*\(|\)/\${{ env.RELEASE_TAG }}: [![](https:\/\/img.shields.io\/badge\/LatestRelease-${{ steps.tag.outputs.release_tag }}-green?style=flat-square)](https:\/\/github.com\/legoomd\/legomd-openwrt-lede\/releases\/tag\/${{ steps.tag.outputs.release_tag }})\2/' docs/README_EN.md
     #     rm -rf release.txt
     #     echo "status=success" >> $GITHUB_OUTPUT
 
