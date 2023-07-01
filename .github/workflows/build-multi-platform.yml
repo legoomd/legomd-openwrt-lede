@@ -39,7 +39,7 @@ jobs:
   build:
     needs: check
     runs-on: ubuntu-latest
-    timeout-minutes: 480
+    timeout-minutes: 600
     name: Build-OpenWrt-${{ matrix.platforms }}
     strategy:
       fail-fast: false
