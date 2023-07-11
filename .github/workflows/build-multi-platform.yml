@@ -38,7 +38,7 @@ env:
 jobs:
   build:
     needs: check
-    runs-on: acs-dev #ubuntu-latest
+    runs-on: self-hosted #ubuntu-latest
     timeout-minutes: 600
     name: Build-OpenWrt-${{ matrix.platforms }}
     strategy:
